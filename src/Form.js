@@ -1,7 +1,9 @@
 import React from "react";
 import firebase from "./firebase.js";
-import { Row, Col, Input, Button, Layout, Collapse } from "antd";
+import { Row, Col, Input, Button, Layout, Collapse, Card, Avatar } from "antd";
+
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 const { Footer } = Layout;
 const Panel = Collapse.Panel;
@@ -18,7 +20,11 @@ class Form extends React.Component {
   state = {
     activity: "",
     usersList: [],
-    redirect: false
+    redirect: false,
+    quote: "",
+    likes: 0,
+    dislikes: 0,
+    action: "liked"
   };
 
   handleChange = evt => {
@@ -89,6 +95,15 @@ class Form extends React.Component {
     return currTime;
   };
 
+  handleKanye = () => {
+    axios.get("http://localhost:5000/").then(response => {
+      const quote = response.data.quote;
+      this.setState({
+        quote: quote
+      });
+    });
+  };
+
   logout = () => {
     firebase.auth().signOut();
     this.props.reset();
@@ -100,7 +115,25 @@ class Form extends React.Component {
     this.props.history.push("/");
   };
 
+  like = () => {
+    this.setState({
+      likes: 1,
+      dislikes: 0,
+      action: "liked"
+    });
+  };
+
+  dislike = () => {
+    this.setState({
+      likes: 0,
+      dislikes: 1,
+      action: "disliked"
+    });
+  };
+
   render() {
+    const { likes, dislikes, action } = this.state;
+    const { Meta } = Card;
     return (
       <div>
         <Row>
@@ -148,6 +181,31 @@ class Form extends React.Component {
               onClick={this.logout}
             >
               Logout
+            </Button>
+            <br />
+            <br />
+            <br />
+            <Card style={{ height: 175 }} title="Kanye West Quotes">
+              <Meta
+                avatar={
+                  <Avatar
+                    shape="square"
+                    size={60}
+                    src="https://stickeroid.com/uploads/pic/fx0n217l-full/mask/stickeroid_5bff2ad685986.png"
+                    alt="Kanye West"
+                  />
+                }
+                description={<p>{this.state.quote}</p>}
+              />
+              {/* <Comment actions={actions} /> */}
+            </Card>
+            <br />
+            <br />
+            <Button
+              style={{ background: "white", color: "#1890ff" }}
+              onClick={this.handleKanye}
+            >
+              Generate inspirational Kanye quote
             </Button>
           </Col>
         </Row>
