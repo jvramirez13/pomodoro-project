@@ -2,7 +2,7 @@
 
 ### Description
 
-The Pomodoro Technique is a time management method designed to improve productivity. The technique breaks down work into 25-minute intervals with 5-minute breaks in between. This web application tool helps users utilize the Pomodoro Technique. 
+The Pomodoro Technique is a time management method designed to improve productivity. The technique breaks down work into 25-minute intervals with 5-minute breaks in between. This web application tool helps users utilize the Pomodoro Technique. The application also utilizes a Kanye West Quote API to display on the page everytime a button is clicked.
 
 ### Features
 
