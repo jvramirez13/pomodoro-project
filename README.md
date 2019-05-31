@@ -1,4 +1,4 @@
-## Pomodoro technique
+## Pomodoro Project
 
 ### Description
 
