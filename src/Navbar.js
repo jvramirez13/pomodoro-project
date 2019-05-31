@@ -9,10 +9,16 @@ class Navbar extends Component {
       <div>
         <Menu mode="horizontal">
           <Menu.Item>
+            <Link to="/Home">Home</Link>
+          </Menu.Item>
+          <Menu.Item>
             <Link to="/Timer">Timer</Link>
           </Menu.Item>
           <Menu.Item>
             <Link to="/History">History</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/Graph">Graph</Link>
           </Menu.Item>
         </Menu>
       </div>

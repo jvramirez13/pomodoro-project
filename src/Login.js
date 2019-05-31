@@ -10,7 +10,8 @@ class Login extends Component {
     this.signup = this.signup.bind(this);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      emailVerified: false
     };
   }
 
@@ -23,7 +24,11 @@ class Login extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .then(u => {
+        if (u.user.emailVerified === false) {
+          alert("You still need to verify your email!");
+        }
+      })
       .catch(error => {
         console.log(error);
       });
@@ -34,9 +39,11 @@ class Login extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
       .then(u => {
-        console.log(u);
+        if (u.user.emailVerified === false) {
+          u.user.sendEmailVerification();
+          alert("An email verification was sent!");
+        }
       })
       .catch(error => {
         console.log(error);

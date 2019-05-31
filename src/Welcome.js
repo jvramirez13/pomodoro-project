@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "./firebase.js";
-import Timer from "./Timer.js";
+import Home from "./Home.js";
 import Login from "./Login.js";
 
 class Welcome extends Component {
@@ -28,7 +28,7 @@ class Welcome extends Component {
   }
 
   render() {
-    return <div>{this.state.user ? <Timer /> : <Login />}</div>;
+    return <div>{this.state.user ? <Home /> : <Login />}</div>;
   }
 }
 

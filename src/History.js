@@ -13,6 +13,11 @@ const columns = [
     render: text => <a href="javascript:;">{text}</a>
   },
   {
+    title: "Type",
+    dataIndex: "type",
+    key: "type"
+  },
+  {
     title: "Date",
     dataIndex: "date",
     key: "date"
@@ -32,6 +37,7 @@ const data = userData => {
       const activity = {
         key: i + 1,
         activity: userData[i].activity,
+        type: userData[i].label,
         date: userData[i].date,
         time: userData[i].time
       };

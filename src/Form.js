@@ -1,20 +1,8 @@
 import React from "react";
 import firebase from "./firebase.js";
-import {
-  Row,
-  Col,
-  Input,
-  Button,
-  Layout,
-  Collapse,
-  Card,
-  Icon,
-  Tooltip,
-  Avatar
-} from "antd";
+import { Radio, Row, Col, Input, Button, Layout, Collapse } from "antd";
 
 import { withRouter } from "react-router-dom";
-import axios from "axios";
 
 const { Footer } = Layout;
 const Panel = Collapse.Panel;
@@ -30,12 +18,11 @@ var usersLists = [];
 class Form extends React.Component {
   state = {
     activity: "",
+    value: 0,
+    label: "",
     usersList: [],
     redirect: false,
-    quote: "",
-    likes: 0,
-    dislikes: 0,
-    action: "liked"
+    quote: ""
   };
 
   handleChange = evt => {
@@ -54,6 +41,7 @@ class Form extends React.Component {
         const usersRef = firebase.database().ref("users/" + user.uid);
         const User = {
           activity: activityName,
+          label: this.state.label,
           date: this.getDate(),
           time: this.getTime()
         };
@@ -67,6 +55,34 @@ class Form extends React.Component {
     this.setState({
       activity: ""
     });
+  };
+
+  getLabel = e => {
+    console.log("radio checked", e.target.value);
+    if (e.target.value == 1) {
+      this.setState({
+        value: e.target.value,
+        label: "School"
+      });
+    }
+    if (e.target.value == 2) {
+      this.setState({
+        value: e.target.value,
+        label: "Work"
+      });
+    }
+    if (e.target.value == 3) {
+      this.setState({
+        value: e.target.value,
+        label: "Leisure"
+      });
+    }
+    if (e.target.value == 4) {
+      this.setState({
+        value: e.target.value,
+        label: "Other"
+      });
+    }
   };
 
   componentDidMount() {
@@ -106,15 +122,6 @@ class Form extends React.Component {
     return currTime;
   };
 
-  handleKanye = () => {
-    axios.get("http://localhost:5000/").then(response => {
-      const quote = response.data.quote;
-      this.setState({
-        quote: quote
-      });
-    });
-  };
-
   logout = () => {
     firebase.auth().signOut();
     this.props.reset();
@@ -126,50 +133,25 @@ class Form extends React.Component {
     this.props.history.push("/");
   };
 
-  like = () => {
-    this.setState({
-      likes: 1,
-      dislikes: 0,
-      action: "liked"
-    });
-  };
-
-  dislike = () => {
-    this.setState({
-      likes: 0,
-      dislikes: 1,
-      action: "disliked"
-    });
-  };
-
   render() {
-    const { likes, dislikes, action } = this.state;
-    const { Meta } = Card;
     return (
       <div>
         <Row>
-          <Col span={3} />
-          <Col
-            span={9}
-            style={{ textAlign: "center", justifyContent: "center" }}
-          >
-            {this.state.usersList !== null &&
-              this.state.usersList.map(submission => {
-                return (
-                  <Collapse>
-                    <Panel
-                      style={customPanelStyle}
-                      header={submission.activity}
-                    >
-                      <p>Date: {submission.date}</p>
-                      <p>Time: {submission.time}</p>
-                    </Panel>
-                  </Collapse>
-                );
-              })}
-          </Col>
           <Col span={2} />
           <Col span={10}>
+            <h3>Select a label: </h3>
+            <br />
+            <Radio.Group onChange={this.getLabel} value={this.state.value}>
+              <Radio value={1}>School</Radio>
+              <Radio value={2}>Work</Radio>
+              <Radio value={3}>Leisure</Radio>
+              <Radio value={4}>Other</Radio>
+            </Radio.Group>
+            <br />
+            <br />
+            <br />
+            <h3>Submit your completed activity:</h3>
+            <br />
             <Input
               type="text"
               name="activity"
@@ -187,37 +169,34 @@ class Form extends React.Component {
                 Submit
               </Button>
             </Footer>
+            <br />
             <Button
               style={{ background: "white", color: "#1890ff" }}
               onClick={this.logout}
             >
               Logout
             </Button>
-            <br />
-            <br />
-            <br />
-            <Card style={{ height: 175 }} title="Kanye West Quotes">
-              <Meta
-                avatar={
-                  <Avatar
-                    shape="square"
-                    size={60}
-                    src="https://stickeroid.com/uploads/pic/fx0n217l-full/mask/stickeroid_5bff2ad685986.png"
-                    alt="Kanye West"
-                  />
-                }
-                description={<p>{this.state.quote}</p>}
-              />
-              {/* <Comment actions={actions} /> */}
-            </Card>
-            <br />
-            <br />
-            <Button
-              style={{ background: "white", color: "#1890ff" }}
-              onClick={this.handleKanye}
-            >
-              Generate inspirational Kanye quote
-            </Button>
+          </Col>
+          <Col span={2} />
+          <Col
+            span={9}
+            style={{ textAlign: "center", justifyContent: "center" }}
+          >
+            {this.state.usersList !== null &&
+              this.state.usersList.map(submission => {
+                return (
+                  <Collapse>
+                    <Panel
+                      style={customPanelStyle}
+                      header={submission.activity}
+                    >
+                      <p>Date: {submission.date}</p>
+                      <p>Time: {submission.time}</p>
+                      <p>Label: {submission.label}</p>
+                    </Panel>
+                  </Collapse>
+                );
+              })}
           </Col>
         </Row>
       </div>
