@@ -1,6 +1,17 @@
 import React from "react";
 import firebase from "./firebase.js";
-import { Row, Col, Input, Button, Layout, Collapse, Card, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Input,
+  Button,
+  Layout,
+  Collapse,
+  Card,
+  Icon,
+  Tooltip,
+  Avatar
+} from "antd";
 
 import { withRouter } from "react-router-dom";
 import axios from "axios";
