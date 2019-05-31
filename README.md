@@ -12,5 +12,5 @@ The application allows users to start a 25-minute timer and log the tasks that t
 
 - Firebase for user authentication and database 
 - react-router for navigating between links
-- Antdesign for UI
-# pomodoro-project
+- antdesign for UI
+- express for creating a backend server for axios calls
